@@ -16,7 +16,7 @@ import {
   waitFor,
   within,
   waitForElementToBeRemoved
-} from "@storybook/test"
+} from '@storybook/test';
 
 const meta = {
   component: InboxScreen,
@@ -38,14 +38,18 @@ export const Default: Story = {
       ],
     },
   },
-  play: async ({ convasElement }) => {
-    const canvas = within(convasElement);
-    await waitForElementToBeRemoved(await canvas.findAllByTestId('loading'));
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Waits for the component to transition from the loading state
+    await waitForElementToBeRemoved(await canvas.findByTestId('loading'));
+    // Waits for the component to be updated based on the store
     await waitFor(async () => {
-      await fireEvent.click(canvas.getByLabelText('pinTask-1'))
-      await fireEvent.click(canvas.getByLabelText('pinTask-3'))
-    })
-  }
+      // Simulates pinning the first task
+      await fireEvent.click(canvas.getByLabelText('pinTask-1'));
+      // Simulates pinning the third task
+      await fireEvent.click(canvas.getByLabelText('pinTask-3'));
+    });
+  },
 };
 
 export const Error: Story = {
