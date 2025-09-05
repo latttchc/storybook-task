@@ -1,16 +1,11 @@
-import type { TaskData } from "../types"
+import type { TaskData } from '../types';
 
-interface Task {
-  id: string
-  title: string
-  state: 'TASK_ARCHIVED' | 'TASK_INBOX' | 'TASK_PINNED'
-}
+type TaskProps = {
+  task: TaskData;
+  onArchiveTask: (id: string) => void;
+  onPinTask: (id: string) => void;
+};
 
-interface TaskProps {
-  task: TaskData
-  onArchiveTask: (id: string) => void
-  onPinTask: (id: string) => void
-}
 
 export default function Task({
   task: { id, title, state },
@@ -18,7 +13,7 @@ export default function Task({
   onPinTask,
 }: TaskProps) {
   return (
-    <div className={`list-item${state}`}>
+    <div className={`list-item ${state}`}>
       <label
         htmlFor={`archiveTask-${id}`}
         aria-label={`archiveTask-${id}`}
@@ -31,19 +26,10 @@ export default function Task({
           id={`archiveTask-${id}`}
           checked={state === "TASK_ARCHIVED"}
         />
-
-        <span
-          className="check-custom"
-          onClick={() => onArchiveTask(id)}
-        />
+        <span className="checkbox-custom" onClick={() => onArchiveTask(id)} />
       </label>
 
-
-      <label
-        htmlFor={`title-${id}`}
-        aria-label={title}
-        className="title"
-      >
+      <label htmlFor={`title-${id}`} aria-label={title} className="title">
         <input
           type="text"
           value={title}
@@ -51,6 +37,7 @@ export default function Task({
           name="title"
           id={`title-${id}`}
           placeholder="Input title"
+          style={{ backgroundColor: 'red' }}
         />
       </label>
       {state !== "TASK_ARCHIVED" && (
@@ -65,5 +52,5 @@ export default function Task({
         </button>
       )}
     </div>
-  )
+  );
 }
