@@ -1,3 +1,4 @@
+
 import type { TaskData } from '../types';
 
 type TaskProps = {
@@ -5,7 +6,6 @@ type TaskProps = {
   onArchiveTask: (id: string) => void;
   onPinTask: (id: string) => void;
 };
-
 
 export default function Task({
   task: { id, title, state },
@@ -37,7 +37,7 @@ export default function Task({
           name="title"
           id={`title-${id}`}
           placeholder="Input title"
-          style={{ backgroundColor: 'red' }}
+          style={{ textOverflow: "ellipsis" }}
         />
       </label>
       {state !== "TASK_ARCHIVED" && (
