@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import TaskList from "./TaskList";
+import { TaskList } from "./TaskList";
 import * as Taskstories from "./Task.stories"
 
 const meta = {
