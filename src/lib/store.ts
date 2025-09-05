@@ -3,7 +3,7 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface TaskBoxState {
   tasks: TaskData[];
-  state: 'idle' | 'loading' | 'failed';
+  status: 'idle' | 'loading' | 'failed';
   error: string | null
 }
 
@@ -16,7 +16,7 @@ const defaultTasks: TaskData[] = [
 
 const TaskBoxData: TaskBoxState = {
   tasks: defaultTasks,
-  state: 'idle',
+  status: 'idle',
   error: null,
 }
 
