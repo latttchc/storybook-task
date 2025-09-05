@@ -1,7 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import InboxScreen from "./InboxScreen";
-import store from "../lib/store";
-import { Provider } from "react-redux";
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import InboxScreen from './InboxScreen';
+
+import store from '../lib/store';
+
+import { http, HttpResponse } from 'msw';
+
+import { MockedState } from './TaskList.stories';
+
+import { Provider } from 'react-redux';
+
+import {
+  fireEvent,
+  waitFor,
+  within,
+  waitForElementToBeRemoved
+} from "@storybook/test"
 
 const meta = {
   component: InboxScreen,
@@ -10,8 +25,39 @@ const meta = {
   tags: ['autodocs'],
 } satisfies Meta<typeof InboxScreen>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {}
-export const Error: Story = {}
+export const Default: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('https://jsonplaceholder.typicode.com/todos?userId=1', () => {
+          return HttpResponse.json(MockedState.tasks);
+        }),
+      ],
+    },
+  },
+  play: async ({ convasElement }) => {
+    const canvas = within(convasElement);
+    await waitForElementToBeRemoved(await canvas.findAllByTestId('loading'));
+    await waitFor(async () => {
+      await fireEvent.click(canvas.getByLabelText('pinTask-1'))
+      await fireEvent.click(canvas.getByLabelText('pinTask-3'))
+    })
+  }
+};
+
+export const Error: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('https://jsonplaceholder.typicode.com/todos?userId=1', () => {
+          return new HttpResponse(null, {
+            status: 403,
+          });
+        }),
+      ],
+    },
+  },
+};
