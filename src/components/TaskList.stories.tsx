@@ -1,14 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react";
 import TaskList from "./TaskList";
 import * as Taskstories from "./Task.stories"
 
-export default {
+const meta = {
   component: TaskList,
   title: 'TaskList',
-  decorators: [(story: () => React.ReactNode) => <div style={{ padding: '3rem' }}>{story()}</div>],
+  decorators: [(story) => <div style={{ padding: '3rem' }}>{story()}</div>],
   tags: ['autodocs'],
-}
+  args: {
+    ...Taskstories.ActionsData,
+  },
+} satisfies Meta<typeof TaskList>
 
-export const Default = {
+export default meta;
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
   args: {
     tasks: [
       { ...Taskstories.Default.args.task, id: '1', title: 'Task 1' },
@@ -21,7 +28,7 @@ export const Default = {
   }
 }
 
-export const WithPinnedTasks = {
+export const WithPinnedTasks: Story = {
   args: {
     tasks: [
       ...Default.args.tasks.slice(0, 5),
@@ -30,14 +37,14 @@ export const WithPinnedTasks = {
   }
 }
 
-export const Loading = {
+export const Loading: Story = {
   args: {
     tasks: [],
     loading: true,
   }
 }
 
-export const Empty = {
+export const Empty: Story = {
   args: {
     ...Loading.args,
     loading: false,
